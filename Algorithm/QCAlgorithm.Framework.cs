@@ -180,7 +180,7 @@ namespace QuantConnect.Algorithm
         /// </summary>
         /// <param name="insights">The insight to process</param>
         [DocumentationAttribute(AlgorithmFramework)]
-        private void ProcessInsights(Insight[] insights)
+        protected void ProcessInsights(Insight[] insights)
         {
             // construct portfolio targets from insights
             var targetsEnumerable = PortfolioConstruction.CreateTargets(this, insights);
@@ -441,7 +441,7 @@ namespace QuantConnect.Algorithm
         /// </summary>
         /// <param name="insights">insights preparing to be emitted</param>
         /// <returns>Validated insights</returns>
-        private Insight[] InitializeInsights(Insight[] insights)
+        protected Insight[] InitializeInsights(Insight[] insights)
         {
             List<Insight> validInsights = null;
             for (var i = 0; i < insights.Length; i++)

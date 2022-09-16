@@ -200,11 +200,11 @@ namespace QuantConnect.Algorithm
                     ? i + c.Series.Values.Count(s => reservedSeriesNames.Count > 0 && !reservedSeriesNames.Contains(s.Name))
                     : i + c.Series.Count);
 
-                if (seriesCount > 10)
-                {
-                    Error("Exceeded maximum series count: Each backtest can have up to 10 series in total.");
-                    return;
-                }
+                // if (seriesCount > 10)
+                // {
+                //     Error("Exceeded maximum series count: Each backtest can have up to 10 series in total.");
+                //     return;
+                // }
 
                 //If we don't have the series, create it:
                 thisChart.AddSeries(new Series(series, SeriesType.Line, 0, "$"));
