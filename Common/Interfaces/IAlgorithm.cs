@@ -424,6 +424,7 @@ namespace QuantConnect.Interfaces
         /// to process events before advancing to the next time step.
         /// </summary>
         void OnEndOfTimeStep();
+        void OnEndOfAlgoTimeStep();
 
         /// <summary>
         /// Send debug message

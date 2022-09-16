@@ -44,6 +44,7 @@ namespace QuantConnect.AlgorithmFactory.Python.Wrappers
     {
         private readonly dynamic _algorithm;
         private readonly dynamic _onData;
+        private readonly dynamic _onEndOfAlgoTimeStep;
         private readonly dynamic _onOrderEvent;
         private readonly dynamic _onMarginCall;
         private readonly IAlgorithm _baseAlgorithm;
@@ -100,6 +101,8 @@ namespace QuantConnect.AlgorithmFactory.Python.Wrappers
                             // If it is not, OnData from the base class will not be called
                             var pyAlgorithm = _algorithm as PyObject;
                             _onData = pyAlgorithm.GetPythonMethod("OnData");
+
+                            _onEndOfAlgoTimeStep = pyAlgorithm.GetPythonMethod("OnEndOfAlgoTimeStep");
 
                             _onMarginCall = pyAlgorithm.GetPythonMethod("OnMarginCall");
 
@@ -477,6 +480,17 @@ namespace QuantConnect.AlgorithmFactory.Python.Wrappers
             _baseAlgorithm.OnEndOfTimeStep();
         }
 
+        public void OnEndOfAlgoTimeStep()
+        {
+            if (_onEndOfAlgoTimeStep != null)
+            {
+                using (Py.GIL())
+                {
+                    _onEndOfAlgoTimeStep();
+                }
+            }
+        }
+
         /// <summary>
         /// Send debug message
         /// </summary>
@@ -593,6 +607,8 @@ namespace QuantConnect.AlgorithmFactory.Python.Wrappers
                 }
             }
         }
+
+
 
         /// <summary>
         /// Used to send data updates to algorithm framework models

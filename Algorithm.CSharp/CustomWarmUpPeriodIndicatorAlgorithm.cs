@@ -30,51 +30,56 @@ namespace QuantConnect.Algorithm.CSharp
     {
         private CustomSMA _customNotWarmUp;
         private CSMAWithWarmUp _customWarmUp;
+        private string _symbol;
+        private Symbol _symbol2;
 
         public override void Initialize()
         {
-            SetStartDate(2013, 10, 7);
-            SetEndDate(2013, 10, 11);
-            AddEquity("SPY", Resolution.Second);
+            SetStartDate(1992, 10, 7);
+            SetEndDate(2002, 10, 21);
+            _symbol = "000001";
+            _symbol2 = AddEquity(_symbol, Resolution.Daily, Market.SZ).Symbol;
 
             // Create two custom indicators, where one of them defines WarmUpPeriod parameter
             _customNotWarmUp = new CustomSMA("_customNotWarmUp", 60);
             _customWarmUp = new CSMAWithWarmUp("_customWarmUp", 60);
 
-            // Register the daily data of "SPY" to automatically update both indicators
-            RegisterIndicator("SPY", _customWarmUp, Resolution.Minute);
-            RegisterIndicator("SPY", _customNotWarmUp, Resolution.Minute);
+            // // Register the daily data of "SPY" to automatically update both indicators
+            // RegisterIndicator("SPY", _customWarmUp, Resolution.Minute);
+            // RegisterIndicator("SPY", _customNotWarmUp, Resolution.Minute);
 
-            // Warm up _customWarmUp indicator
-            WarmUpIndicator("SPY", _customWarmUp, Resolution.Minute);
+            // // Warm up _customWarmUp indicator
+            // WarmUpIndicator("SPY", _customWarmUp, Resolution.Minute);
 
-            // Check _customWarmUp indicator has already been warmed up with the requested data
-            if (!_customWarmUp.IsReady)
-            {
-                throw new Exception("_customWarmUp indicator was expected to be ready");
-            }
-            if (_customWarmUp.Samples != 60)
-            {
-                throw new Exception("_customWarmUp indicator was expected to have processed 60 datapoints already");
-            }
+            // // Check _customWarmUp indicator has already been warmed up with the requested data
+            // if (!_customWarmUp.IsReady)
+            // {
+            //     throw new Exception("_customWarmUp indicator was expected to be ready");
+            // }
+            // if (_customWarmUp.Samples != 60)
+            // {
+            //     throw new Exception("_customWarmUp indicator was expected to have processed 60 datapoints already");
+            // }
 
-            // Try to warm up _customNotWarmUp indicator. It's expected from LEAN to skip the warm up process
-            // because this indicator doesn't implement IIndicatorWarmUpPeriodProvider
-            WarmUpIndicator("SPY", _customNotWarmUp, Resolution.Minute);
+            // // Try to warm up _customNotWarmUp indicator. It's expected from LEAN to skip the warm up process
+            // // because this indicator doesn't implement IIndicatorWarmUpPeriodProvider
+            // WarmUpIndicator("SPY", _customNotWarmUp, Resolution.Minute);
 
             // Check _customNotWarmUp indicator is not ready, because the warm up process was skipped
-            if (_customNotWarmUp.IsReady)
-            {
-                throw new Exception("_customNotWarmUp indicator wasn't expected to be warmed up");
-            }
+            // if (_customNotWarmUp.IsReady)
+            // {
+            //     throw new Exception("_customNotWarmUp indicator wasn't expected to be warmed up");
+            // }
         }
 
         public void OnData(TradeBars data)
         {
             if (!Portfolio.Invested)
             {
-                SetHoldings("SPY", 1);
+                SetHoldings(_symbol, 1);
             }
+           Console.WriteLine(data[_symbol2].ToString());
+
 
             if (Time.Second == 0)
             {
@@ -93,6 +98,11 @@ namespace QuantConnect.Algorithm.CSharp
                     throw new Exception($"The values of the indicators are not the same. The difference is {diff}");
                 }
             }
+        }
+
+        public void OnEndOfAlgoTimeStep()
+        {
+            Console.WriteLine("end...............");
         }
 
         /// <summary>

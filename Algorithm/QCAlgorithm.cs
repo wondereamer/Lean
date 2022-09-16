@@ -830,6 +830,34 @@ namespace QuantConnect.Algorithm
         {
         }
 
+        public virtual void OnEndOfAlgoTimeStep() { 
+            if (_onEndOfAlgoTimeStep == null)
+            {
+                var method = GetType().GetMethods()
+                    .Where(x => x.Name == "OnEndOfAlgoTimeStep")
+                    .FirstOrDefault(x => x.DeclaringType != typeof(QCAlgorithm));
+
+                if (method == null)
+                {
+                    return;
+                }
+
+                var self = Expression.Constant(this);
+                var call = Expression.Call(self, method);
+                var lambda = Expression.Lambda(call);
+                Expression.Lambda(call);
+                var t = lambda.Compile();
+                _onEndOfAlgoTimeStep = (Action)lambda.Compile();
+            }
+
+            // if we have it, then invoke it
+            if (_onEndOfAlgoTimeStep != null)
+            {
+                _onEndOfAlgoTimeStep();
+                return;
+            }
+        }
+
         // <summary>
         // Event - v2.0 TRADEBAR EVENT HANDLER: (Pattern) Basic template for user to override when requesting tradebar data.
         // </summary>

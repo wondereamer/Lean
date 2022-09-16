@@ -611,6 +611,8 @@ namespace QuantConnect.Lean.Engine
 
                     // always turn the crank on this method to ensure universe selection models function properly on day changes w/out data
                     algorithm.OnFrameworkData(timeSlice.Slice);
+
+                    algorithm.OnEndOfAlgoTimeStep();
                 }
                 catch (Exception err)
                 {
@@ -776,6 +778,7 @@ namespace QuantConnect.Lean.Engine
                 // make the history request and build time slices
                 foreach (var slice in history.GetHistory(historyRequests, timeZone))
                 {
+                    // warm up data
                     TimeSlice timeSlice;
                     try
                     {
@@ -853,6 +856,7 @@ namespace QuantConnect.Lean.Engine
 
             foreach (var timeSlice in synchronizer.StreamData(cancellationToken))
             {
+                // bactesting history data or live data
                 if (algorithm.LiveMode && algorithm.IsWarmingUp)
                 {
                     if (timeSlice.IsTimePulse)
