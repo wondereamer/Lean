@@ -105,6 +105,7 @@ namespace QuantConnect.Algorithm
         // used for calling through to void OnData(Slice) if no override specified
         private bool _checkedForOnDataSlice;
         private Action<Slice> _onDataSlice;
+        private Action _onEndOfAlgoTimeStep;
 
         // flips to true when the user
         private bool _userSetSecurityInitializer = false;
@@ -174,7 +175,7 @@ namespace QuantConnect.Algorithm
             Schedule = new ScheduleManager(Securities, TimeZone);
 
             // initialize the trade builder
-            TradeBuilder = new TradeBuilder(FillGroupingMethod.FillToFill, FillMatchingMethod.FIFO);
+            TradeBuilder = new TradeBuilder(FillGroupingMethod.FillToFill, FillMatchingMethod.LIFO);
 
             SecurityInitializer = new BrokerageModelSecurityInitializer(new DefaultBrokerageModel(AccountType.Margin), SecuritySeeder.Null);
 
@@ -2625,7 +2626,7 @@ namespace QuantConnect.Algorithm
         /// <param name="insights">The collection of insights generaed at the current time step</param>
         /// <param name="clone">Will emit a clone of the generated insights</param>
         [DocumentationAttribute(AlgorithmFramework)]
-        private void OnInsightsGenerated(Insight[] insights, bool clone = true)
+        protected void OnInsightsGenerated(Insight[] insights, bool clone = true)
         {
             // debug printing of generated insights
             if (DebugMode)
