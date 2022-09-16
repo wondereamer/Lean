@@ -493,7 +493,7 @@ namespace QuantConnect.Securities
                 : MidpointRounding.ToNegativeInfinity;
 
             // Round this order size appropriately
-            orderSize = orderSize.DiscretelyRoundBy(lotSize, roundingMode);
+            orderSize = orderSize.DiscretelyRoundBy(lotSize, roundingMode); // 让它被lot size整除
 
             // Use our model to calculate this final margin as a final check
             finalMargin = this.GetInitialMarginRequirement(security,

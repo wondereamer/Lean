@@ -254,7 +254,7 @@ namespace QuantConnect.Lean.Engine.TransactionHandlers
                     $"Order exceeds maximum shortable quantity for Symbol {request.Symbol} (requested short: {Math.Abs(request.Quantity)})");
             }
 
-            request.SetResponse(response);
+            request.SetResponse(response, OrderRequestStatus.Processing);
             var ticket = new OrderTicket(_algorithm.Transactions, request);
 
             Interlocked.Increment(ref _totalOrderCount);

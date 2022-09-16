@@ -225,7 +225,7 @@ namespace QuantConnect.Securities
         public DateTime GetNextMarketOpen(DateTime localDateTime, bool extendedMarket)
         {
             var time = localDateTime;
-            var oneWeekLater = localDateTime.Date.AddDays(15);
+            var oneWeekLater = localDateTime.Date.AddDays(20);
             do
             {
                 var marketHours = GetMarketHours(time.DayOfWeek);
@@ -265,10 +265,11 @@ namespace QuantConnect.Securities
                 }
 
                 time = time.Date + Time.OneDay;
+             
             }
             while (time < oneWeekLater);
 
-            throw new ArgumentException("Unable to locate next market open within two weeks.");
+            throw new ArgumentException($"Unable to locate next market open within two weeks. localtime: {localDateTime}, bound: {oneWeekLater}");
         }
 
         /// <summary>

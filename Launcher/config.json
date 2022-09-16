@@ -9,14 +9,18 @@
   "environment": "backtesting", // "live-paper", "backtesting", "live-interactive", "live-interactive-iqfeed"
 
   // algorithm class selector
-  "algorithm-type-name": "BasicTemplateFrameworkAlgorithm",
+  // "algorithm-type-name": "SelectAlpha",
+  // "algorithm-type-name": "CustomWarmUpPeriodIndicatorAlgorithm",
+  // "algorithm-type-name": "RollingWindowAlgorithm",
+  "algorithm-type-name": "SimpleTech",
 
   // Algorithm language selector - options CSharp, Python
-  "algorithm-language": "CSharp",
+  "algorithm-language": "Python",
 
   //Physical DLL location
-  "algorithm-location": "QuantConnect.Algorithm.CSharp.dll",
-  //"algorithm-location": "../../../Algorithm.Python/BasicTemplateFrameworkAlgorithm.py",
+  // "algorithm-location": "QuantConnect.Algorithm.CSharp.dll",
+  "algorithm-location": "/Users/wdj/Work/banana/SimpleTech.py",
+  // "algorithm-location": "../../../Algorithm.Python/RollingWindowAlgorithm.py",
 
   //Research notebook
   //"composer-dll-directory": ".",
@@ -55,6 +59,7 @@
 
   // save list of transactions to the specified csv file
   "transaction-log": "",
+
 
   // To get your api access token go to quantconnect.com/account
   "job-user-id": "0",

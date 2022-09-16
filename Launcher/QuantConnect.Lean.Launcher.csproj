@@ -19,8 +19,8 @@
     <DebugType>full</DebugType>
     <Optimize>$(SelectedOptimization)</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DefineConstants>TRACE;DEBUG;NET;NET5_0;NETCOREAPP</DefineConstants>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -43,6 +43,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="R.NET" Version="1.9.0" />
+    <PackageReference Include="QuantConnect.pythonnet" Version="2.0.11" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Common\Properties\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
@@ -63,6 +64,9 @@
     <ProjectReference Include="..\Messaging\QuantConnect.Messaging.csproj" />
     <ProjectReference Include="..\Queues\QuantConnect.Queues.csproj" />
     <ProjectReference Include="..\ToolBox\QuantConnect.ToolBox.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="QuantConnect.pythonnet" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\LICENSE">
