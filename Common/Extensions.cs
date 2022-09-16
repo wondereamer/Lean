@@ -1362,7 +1362,7 @@ namespace QuantConnect
             // we know these type implement the streamReader interface lets avoid dynamic reflection call to figure it out
             if (baseDataType == typeof(TradeBar) || baseDataType == typeof(QuoteBar) || baseDataType == typeof(Tick))
             {
-                return true;
+                return false;
             }
 
             var method = baseDataType.GetMethod("Reader",
