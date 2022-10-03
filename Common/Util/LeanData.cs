@@ -54,6 +54,18 @@ namespace QuantConnect.Util
             return GenerateLine(clone, clone.Symbol.ID.SecurityType, resolution);
         }
 
+        public static Dictionary<string, string> GenerateMongodbSourceHeader(Symbol symbol, DateTime date, Resolution resolution, TickType tickType)
+        {
+            var header = new Dictionary<string, string>();
+            var strDate = resolution == Resolution.Daily ? "" :  date.ToString("yyyyMMdd") + " 00:00:00";
+            header.Add("date", strDate);
+            header.Add("ticker", symbol.ToString());
+            header.Add("market", symbol.ID.Market.ToString());
+            header.Add("ticktype", tickType.ToString());
+            header.Add("resolution", resolution.ToString());
+            return header;
+        }
+
         /// <summary>
         /// Converts the specified base data instance into a lean data file csv line
         /// </summary>

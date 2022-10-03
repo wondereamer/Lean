@@ -54,6 +54,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="NodaTime" Version="3.0.5" />
     <PackageReference Include="RestSharp" Version="106.12.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.17.1" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Common\Properties\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
@@ -69,6 +70,9 @@
     <ProjectReference Include="..\Indicators\QuantConnect.Indicators.csproj" />
     <ProjectReference Include="..\Common\QuantConnect.csproj" />
     <ProjectReference Include="..\Logging\QuantConnect.Logging.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="MongoDB.Driver" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\LICENSE">

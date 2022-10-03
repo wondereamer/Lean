@@ -41,7 +41,7 @@ namespace QuantConnect.Tests
             AdjustCurrentDirectory();
             TestGlobals.Initialize();
         }
-
+        
         public static void AdjustCurrentDirectory()
         {
             // nunit 3 sets the current folder to a temp folder we need it to be the test bin output folder
@@ -50,6 +50,7 @@ namespace QuantConnect.Tests
             Directory.SetCurrentDirectory(dir);
             Config.Reset();
             Globals.Reset();
+            return;
             PythonInitializer.Initialize();
             PythonInitializer.AddPythonPaths(
                 new[]

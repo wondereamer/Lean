@@ -408,6 +408,10 @@ namespace QuantConnect.Lean.Engine.DataFeeds
                 // fetch the new source, using the data time zone for the date
                 var newSource = _dataFactory.GetSource(_config, date, false);
 
+                // add backtesting period date
+                newSource.Headers.Add(new KeyValuePair<string, string>("PeriodStart", _periodStart.ToString("yyyyMMdd")));
+                newSource.Headers.Add(new KeyValuePair<string, string>("PeriodFinish", _periodFinish.ToString("yyyyMMdd")));
+
                 // check if we should create a new subscription factory
                 var sourceChanged = _source != newSource && newSource.Source != "";
                 if (sourceChanged)
@@ -460,6 +464,7 @@ namespace QuantConnect.Lean.Engine.DataFeeds
                 switch (args.Source.TransportMedium)
                 {
                     case SubscriptionTransportMedium.LocalFile:
+                    case SubscriptionTransportMedium.MongoDB:
                         // the local uri doesn't exist, write an error and return null so we we don't try to get data for today
                         // Log.Trace(string.Format("SubscriptionDataReader.GetReader(): Could not find QC Data, skipped: {0}", source));
                         break;

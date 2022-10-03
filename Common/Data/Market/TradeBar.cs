@@ -20,6 +20,7 @@ using System.Threading;
 using QuantConnect.Util;
 using System.Globalization;
 using QuantConnect.Logging;
+using QuantConnect.Configuration;
 using static QuantConnect.StringExtensions;
 
 namespace QuantConnect.Data.Market
@@ -849,11 +850,25 @@ namespace QuantConnect.Data.Market
                 // this data type is streamed in live mode
                 return new SubscriptionDataSource(string.Empty, SubscriptionTransportMedium.Streaming);
             }
+            var dataSource = Config.Get(Config.DataSource);
 
-            var source = LeanData.GenerateZipFilePath(Globals.DataFolder, config.Symbol, date, config.Resolution, config.TickType);
-            if (config.SecurityType == SecurityType.Future || config.SecurityType.IsOption())
+            string source = "";
+            if (dataSource.ToLower() == "mongodb")
             {
-                source += "#" + LeanData.GenerateZipEntryName(config.Symbol, date, config.Resolution, config.TickType);
+                var header = LeanData.GenerateMongodbSourceHeader(config.Symbol, date, config.Resolution, config.TickType);
+                if (config.Resolution == Resolution.Daily)
+                {
+                    source = $"Mongodb: {config.Symbol.ToString()}.{config.Resolution}";
+                }
+                return new SubscriptionDataSource(source, SubscriptionTransportMedium.MongoDB, FileFormat.Csv, header);
+            }
+            else 
+            {
+                source = LeanData.GenerateZipFilePath(Globals.DataFolder, config.Symbol, date, config.Resolution, config.TickType);
+                if (config.SecurityType == SecurityType.Future || config.SecurityType.IsOption())
+                {
+                    source += "#" + LeanData.GenerateZipEntryName(config.Symbol, date, config.Resolution, config.TickType);
+                }
             }
             return new SubscriptionDataSource(source, SubscriptionTransportMedium.LocalFile, FileFormat.Csv);
         }
@@ -891,6 +906,7 @@ namespace QuantConnect.Data.Market
         public override string ToString()
         {
             return $"{Symbol}: " +
+                   $"T: {Time.ToString("yyyy-MM-dd HH:mm:ss")} " +
                    $"O: {Open.SmartRounding()} " +
                    $"H: {High.SmartRounding()} " +
                    $"L: {Low.SmartRounding()} " +

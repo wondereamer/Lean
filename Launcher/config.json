@@ -60,6 +60,10 @@
   // save list of transactions to the specified csv file
   "transaction-log": "",
 
+  // data source
+  "data-source": "mongodb",   // mongodb, csv
+  "mongo-ip": "localhost",
+  "mongo-port": 27017,
 
   // To get your api access token go to quantconnect.com/account
   "job-user-id": "0",

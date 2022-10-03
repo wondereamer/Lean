@@ -19,6 +19,7 @@ using System.ComponentModel;
 using QuantConnect.Interfaces;
 using System.Collections.Generic;
 using QuantConnect.Lean.Engine.DataFeeds.Transport;
+using QuantConnect.Configuration;
 
 namespace QuantConnect.Lean.Engine.DataFeeds
 {
@@ -81,6 +82,10 @@ namespace QuantConnect.Lean.Engine.DataFeeds
 
                     case SubscriptionTransportMedium.Rest:
                         reader = new RestSubscriptionStreamReader(subscriptionDataSource.Source, subscriptionDataSource.Headers, IsLiveMode);
+                        break;
+
+                    case SubscriptionTransportMedium.MongoDB:
+                        reader = MongoDBSubscriptionStreamReader.Create(Config.Get("mongo-ip"), Config.GetInt("mongo-port"), subscriptionDataSource.Headers);
                         break;
 
                     default:

@@ -43,7 +43,7 @@ namespace QuantConnect.Data
         /// <summary>
         /// Gets the header values to be used in the web request.
         /// </summary>
-        public readonly IReadOnlyList<KeyValuePair<string, string>> Headers;
+        public readonly List<KeyValuePair<string, string>> Headers;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SubscriptionDataSource"/> class.
@@ -79,7 +79,7 @@ namespace QuantConnect.Data
             Source = source;
             Format = format;
             TransportMedium = transportMedium;
-            Headers = (headers?.ToList() ?? new List<KeyValuePair<string, string>>()).AsReadOnly();
+            Headers = (headers?.ToList() ?? new List<KeyValuePair<string, string>>());
         }
 
         /// <summary>

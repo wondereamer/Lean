@@ -32,6 +32,9 @@ namespace QuantConnect.Configuration
     {
         //Location of the configuration file.
         private static string ConfigurationFileName = "config.json";
+        public static string DataSource = "data-source";
+        public static string MongoIP = "mongo-ip";
+        public static string MongoPort = "mongo-port";
 
         /// <summary>
         /// Set configuration file on-fly

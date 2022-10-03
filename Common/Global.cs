@@ -611,7 +611,9 @@ namespace QuantConnect
         /// <summary>
         /// The subscription's data is streamed
         /// </summary>
-        Streaming
+        Streaming,
+
+        MongoDB
     }
 
     /// <summary>
