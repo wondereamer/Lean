@@ -106,7 +106,14 @@ namespace QuantConnect.Data.Market
         /// </summary>
         public override DateTime EndTime
         {
-            get { return Time + Period; }
+            get { 
+                // TODO get offset from calendar
+                if (Period == TimeSpan.FromDays(1))
+                {
+                    return Time + TimeSpan.FromHours(23);
+                }
+                return Time + Period;
+            }
             set { Period = value - Time; }
         }
 
