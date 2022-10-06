@@ -343,9 +343,15 @@ namespace QuantConnect.Lean.Engine.DataFeeds.Enumerators
                         fillForward = previous.Clone(true);
 
                         // bar are ALWAYS of the data resolution
-
-                        fillForward.Time = (potentialBarEndTime - _dataResolution).ConvertFromUtc(Exchange.TimeZone);
-                        fillForward.EndTime = potentialBarEndTimeInExchangeTZ;
+                        if (_dataResolution == TimeSpan.FromDays(1))
+                        {
+                            fillForward.Time = fillForward.Time + _dataResolution;
+                        }
+                        else
+                        {
+                            fillForward.Time = (potentialBarEndTime - _dataResolution).ConvertFromUtc(Exchange.TimeZone);
+                            fillForward.EndTime = potentialBarEndTimeInExchangeTZ;
+                        }
 
                         return true;
                     }
