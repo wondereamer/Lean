@@ -88,8 +88,10 @@ namespace QuantConnect.Lean.Engine.DataFeeds
                         if (enqueueable.HasFinished)
                         {
                             enumerator.DisposeSafely();
+                            Log.Debug("[DataIterationEnd] subscription removed");
                             return false;
                         }
+                        
 
                         var data = enumerator.Current;
 
@@ -97,8 +99,10 @@ namespace QuantConnect.Lean.Engine.DataFeeds
                         // This currently catches Auxiliary data that we don't want to emit
                         if (data != null && !config.ShouldEmitData(data, request.IsUniverseSubscription))
                         {
+                            Log.Debug("[DataIgnored] ignore data should not be emitted");
                             continue;
                         }
+                      
 
                         // In the event we have "Raw" configuration, we will force our subscription data
                         // to precalculate adjusted data. The data will still be emitted as raw, but

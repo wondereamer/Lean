@@ -295,6 +295,7 @@ namespace QuantConnect.Lean.Engine.DataFeeds
                     if (instance == null)
                     {
                         // keep reading until we get valid data
+                        Log.Error("[DataIgnored]ignore null instance");
                         continue;
                     }
 
@@ -305,12 +306,20 @@ namespace QuantConnect.Lean.Engine.DataFeeds
                         {
                             // Skip the point if time went backwards for custom data?
                             // TODO: Should this be the case for all datapoints?
-                            if (instance.EndTime < _previous.EndTime) continue;
+                            if (instance.EndTime < _previous.EndTime)
+                            {
+                                Log.Error("[DataIgnored]ignore delayed instance from unsorted data. instance.Endtime < previous.Endtime");
+                                continue;
+                            }
                         }
                         else
                         {
                             // all other resolutions don't allow duplicate end times
-                            if (instance.EndTime <= _previous.EndTime) continue;
+                            if (instance.EndTime <= _previous.EndTime) 
+                            {
+                                Log.Error("[DataIgnored]ignore delayed or duplicate instance from unsorted data. instance.Endtime <= previous.Endtime");
+                                continue;
+                            }
                         }
                     }
 
@@ -318,6 +327,7 @@ namespace QuantConnect.Lean.Engine.DataFeeds
                     {
                         // keep reading until we get a value on or after the start
                         _previous = instance;
+                        Log.Debug("[DataIgnored]ignore instance before periodStart requeired");
                         continue;
                     }
 
@@ -340,6 +350,7 @@ namespace QuantConnect.Lean.Engine.DataFeeds
                                 {
                                     // the end, no new enumerator and current instance is beyond current date
                                     _endOfStream = true;
+                                    Log.Error("[DataIterationEnd] ignore data not based on current tradeable date");
                                     return false;
                                 }
                             }
@@ -355,6 +366,7 @@ namespace QuantConnect.Lean.Engine.DataFeeds
                     if(shouldSkip)
                     {
                         // Skip current 'instance' if its start time is beyond the current date, fixes GH issue 3912
+                        Log.Error("[DataIgnored]Skip current 'instance' if its start time is beyond the current date");
                         continue;
                     }
 
@@ -364,6 +376,7 @@ namespace QuantConnect.Lean.Engine.DataFeeds
                     {
                         // stop reading when we get a value after the end
                         _endOfStream = true;
+                        Log.Debug("[DataIterationEnd] stop reading when we get a value after the end");
                         return false;
                     }
 

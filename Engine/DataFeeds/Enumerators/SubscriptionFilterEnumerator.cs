@@ -130,12 +130,14 @@ namespace QuantConnect.Lean.Engine.DataFeeds.Enumerators
                         // execute user data filters
                         if (current.DataType != MarketDataType.Auxiliary && !_dataFilter.Filter(_security, current))
                         {
+                            Log.Debug("[DataIgnored]ignore filtered data");
                             continue;
                         }
                     }
                     catch (Exception err)
                     {
                         OnDataFilterError(err);
+                        Log.Debug("[DataIgnored]ignore filtred data");
                         continue;
                     }
 
@@ -147,12 +149,14 @@ namespace QuantConnect.Lean.Engine.DataFeeds.Enumerators
                             // TODO: replace for setting security.RealTimePrice not to modify security cache data directly
                             _security.SetMarketPrice(current);
                         }
+                        Log.Debug("[DataIgnored]ignore filter bar which is not within the exchange's market hours");
                         continue;
                     }
 
                     // make sure we haven't passed the end
                     if (current.Time > _endTime)
                     {
+                        Log.Debug("[DataIgnored]ignore data time passing required end time");
                         return false;
                     }
                 }

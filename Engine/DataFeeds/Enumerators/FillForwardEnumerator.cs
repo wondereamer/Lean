@@ -119,6 +119,7 @@ namespace QuantConnect.Lean.Engine.DataFeeds.Enumerators
                 // don't fill forward after data after the delisted date
                 if (_previous == null || _previous.EndTime >= _delistedTime.Value)
                 {
+                    Log.Debug("[DataIterationEnd] don't fill forward after data after the delisted date");
                     return false;
                 }
             }
@@ -141,6 +142,7 @@ namespace QuantConnect.Lean.Engine.DataFeeds.Enumerators
                     if (_delistedTime.HasValue)
                     {
                         // don't fill forward delisted data
+                        Log.Debug("[DataIterationEnd] don't fill forward delisted data");
                         return false;
                     }
 
@@ -148,6 +150,7 @@ namespace QuantConnect.Lean.Engine.DataFeeds.Enumerators
                     if (_previous == null || _previous.EndTime >= _subscriptionEndTime)
                     {
                         // we passed the end of subscription, we're finished
+                        Log.Debug("[DataIterationEnd] we passed the end of subscription, we're finished");
                         return false;
                     }
 
@@ -166,6 +169,7 @@ namespace QuantConnect.Lean.Engine.DataFeeds.Enumerators
                     // don't emit the last bar if the market isn't considered open!
                     if (!Exchange.IsOpenDuringBar(endOfSubscription.Time, endOfSubscription.EndTime, _isExtendedMarketHours))
                     {
+                        Log.Debug("[DataIterationEnd] don't emit the last bar if the market isn't considered open");
                         return false;
                     }
 
@@ -204,6 +208,11 @@ namespace QuantConnect.Lean.Engine.DataFeeds.Enumerators
                 // we require fill forward data because the _enumerator.Current is too far in future
                 _isFillingForward = true;
                 Current = fillForward;
+                if (Current.EndTime <= _previous.EndTime)
+                {
+                    Log.Error("[DataIterationEnd] fill forward error");
+                    return false;
+                }
                 return true;
             }
 
@@ -334,6 +343,7 @@ namespace QuantConnect.Lean.Engine.DataFeeds.Enumerators
                         fillForward = previous.Clone(true);
 
                         // bar are ALWAYS of the data resolution
+
                         fillForward.Time = (potentialBarEndTime - _dataResolution).ConvertFromUtc(Exchange.TimeZone);
                         fillForward.EndTime = potentialBarEndTimeInExchangeTZ;
 
