@@ -12,14 +12,14 @@
   // "algorithm-type-name": "SelectAlpha",
   // "algorithm-type-name": "CustomWarmUpPeriodIndicatorAlgorithm",
   // "algorithm-type-name": "RollingWindowAlgorithm",
-  "algorithm-type-name": "SimpleTech",
+  "algorithm-type-name": "test_universe_selection",
 
   // Algorithm language selector - options CSharp, Python
   "algorithm-language": "Python",
 
   //Physical DLL location
   // "algorithm-location": "QuantConnect.Algorithm.CSharp.dll",
-  "algorithm-location": "/Users/wdj/Work/banana/SimpleTech.py",
+  "algorithm-location": "/Users/wdj/Work/banana/tests/test_strategies/test_universe_selection.py",
   // "algorithm-location": "../../../Algorithm.Python/RollingWindowAlgorithm.py",
 
   //Research notebook
@@ -31,6 +31,7 @@
   // debugging configuration - options for debugging-method LocalCmdLine, VisualStudio, Debugpy, PyCharm
   "debugging": false,
   "debugging-method": "LocalCmdline",
+  "debug-mode": true,
 
   // handlers
   "log-handler": "QuantConnect.Logging.CompositeLogHandler",

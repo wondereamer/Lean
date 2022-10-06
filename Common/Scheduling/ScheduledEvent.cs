@@ -152,14 +152,14 @@ namespace QuantConnect.Scheduling
                     {
                         if (IsLoggingEnabled)
                         {
-                            Log.Trace($"ScheduledEvent.{Name}: Completed scheduled events.");
+                            Log.Debug($"ScheduledEvent.{Name}: Completed scheduled events.");
                         }
                         _endOfScheduledEvents = true;
                         return;
                     }
                     if (IsLoggingEnabled)
                     {
-                        Log.Trace($"ScheduledEvent.{Name}: Next event: {_orderedEventUtcTimes.Current.ToStringInvariant(DateFormat.UI)} UTC");
+                        Log.Debug($"ScheduledEvent.{Name}: Next event: {_orderedEventUtcTimes.Current.ToStringInvariant(DateFormat.UI)} UTC");
                     }
                 }
 
@@ -168,7 +168,7 @@ namespace QuantConnect.Scheduling
                 {
                     if (IsLoggingEnabled)
                     {
-                        Log.Trace($"ScheduledEvent.{Name}: Firing at {utcTime.ToStringInvariant(DateFormat.UI)} UTC " +
+                        Log.Debug($"ScheduledEvent.{Name}: Firing at {utcTime.ToStringInvariant(DateFormat.UI)} UTC " +
                             $"Scheduled at {_orderedEventUtcTimes.Current.ToStringInvariant(DateFormat.UI)} UTC"
                         );
                     }
@@ -207,7 +207,7 @@ namespace QuantConnect.Scheduling
 
                     if (IsLoggingEnabled)
                     {
-                        Log.Trace($"ScheduledEvent.{Name}: Skipped events before {utcTime.ToStringInvariant(DateFormat.UI)}. " +
+                        Log.Debug($"ScheduledEvent.{Name}: Skipped events before {utcTime.ToStringInvariant(DateFormat.UI)}. " +
                             $"Next event: {_orderedEventUtcTimes.Current.ToStringInvariant(DateFormat.UI)}"
                         );
                     }
@@ -216,7 +216,7 @@ namespace QuantConnect.Scheduling
             }
             if (IsLoggingEnabled)
             {
-                Log.Trace($"ScheduledEvent.{Name}: Exhausted event stream during skip until {utcTime.ToStringInvariant(DateFormat.UI)}");
+                Log.Debug($"ScheduledEvent.{Name}: Exhausted event stream during skip until {utcTime.ToStringInvariant(DateFormat.UI)}");
             }
             _endOfScheduledEvents = true;
         }
