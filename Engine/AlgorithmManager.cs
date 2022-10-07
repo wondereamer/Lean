@@ -1102,6 +1102,10 @@ namespace QuantConnect.Lean.Engine
             }
 
             var roundedDataPointEndTime = dataPointEndTime.RoundDownInTimeZone(config.Increment, config.ExchangeTimeZone, config.DataTimeZone);
+            if (config.Resolution == Resolution.Daily)
+            {
+                roundedDataPointEndTime += TimeSpan.FromHours(23);
+            }
             return dataPointEndTime == roundedDataPointEndTime;
         }
 
